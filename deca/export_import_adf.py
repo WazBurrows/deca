@@ -246,7 +246,7 @@ def node_export_adf_processed(
                 adf_export_xlsx_0x0b73315d(vfs, adf_db, vnode, export_path, allow_overwrite)
 
 
-def node_export_adf_text(
+def node_export_adf_text( 
         vfs: VfsDatabase,
         adf_db: AdfDatabase,
         vnode: VfsNode,
@@ -254,17 +254,17 @@ def node_export_adf_text(
         allow_overwrite=False
 ):
     adf = adf_db.read_node(vfs, vnode)
+    if adf is not None:
+        fn = generate_export_file_path(vfs, export_path, vnode, ' as Text') + '.txt'
 
-    fn = generate_export_file_path(vfs, export_path, vnode, ' as Text') + '.txt'
-
-    if not allow_overwrite and os.path.exists(fn):
-        raise EDecaFileExists(fn)
-
-    s = adf.dump_to_string(vfs)
-
-    fn_dir = os.path.dirname(fn)
-    os.makedirs(fn_dir, exist_ok=True)
-
-    with open(fn, 'wt', encoding='utf-8') as f:
-        f.write(s)
+        if not allow_overwrite and os.path.exists(fn):
+            raise EDecaFileExists(fn)
+    
+        s = adf.dump_to_string(vfs)
+    
+        fn_dir = os.path.dirname(fn)
+        os.makedirs(fn_dir, exist_ok=True)
+    
+        with open(fn, 'wt', encoding='utf-8') as f:
+            f.write(s)
 
